@@ -123,7 +123,7 @@ Para usuarios que requieran apoyo adicional en la configuración del entorno loc
 
  * Instalación de Visual Studio Code y extensiones de PHP
    
- *Instalación y configuración de XAMPP en Windows
+ * Instalación y configuración de XAMPP en Windows
 
 > Nota: Estas referencias no forman parte del desarrollo del proyecto y se incluyen únicamente como material de apoyo opcional.
 
