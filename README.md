@@ -122,6 +122,7 @@ De este modo, el repositorio permite evaluar el proyecto tanto desde una perspec
 Para usuarios que requieran apoyo adicional en la configuración del entorno local, se pueden consultar tutoriales públicos en Internet sobre:
 
  * Instalación de Visual Studio Code y extensiones de PHP
+   
  *Instalación y configuración de XAMPP en Windows
 
 > Nota: Estas referencias no forman parte del desarrollo del proyecto y se incluyen únicamente como material de apoyo opcional.
