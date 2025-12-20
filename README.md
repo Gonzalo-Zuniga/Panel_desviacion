@@ -1,113 +1,146 @@
+# Integración MVC + Motor de Machine Learning para Detección de Anomalías
 
-# Integración MVC + Motor de Machine Learning  
-Este repositorio contiene los elementos necesarios para comprender e implementar un sistema completo de **detección de anomalías** utilizando un modelo de Machine Learning entrenado en Python e integrado a un frontend y backend desarrollados bajo la arquitectura **MVC en PHP**.
+Este repositorio contiene la implementación de un sistema completo de **detección de anomalías en alertas de fraude**, integrando un motor de **Machine Learning desarrollado en Python** con un **backend y frontend en PHP bajo arquitectura MVC**.
 
-El objetivo del proyecto es ofrecer un flujo claro, escalable y usable que permita cargar archivos CSV, procesarlos mediante el modelo entrenado y presentar resultados interpretables para apoyar la toma de decisiones.
-
----
-
-## 1. Estructura general del repositorio
-
-El sistema se divide en tres componentes principales:
-
-### 1.1. Motor de Machine Learning (Python)  
-Este módulo contiene todo el desarrollo del modelo, incluyendo:
-
-- Preparación y análisis previo de datos  
-- Feature engineering  
-- Entrenamiento del modelo seleccionado (Random Forest)  
-- Guardado del modelo (`model.pkl`) y preprocesador (`preprocessor.pkl`)  
-- Script de inferencia (`run_model.py`) encargado de recibir un CSV, procesarlo y devolver las predicciones en formato JSON  
-
-Este componente debe ejecutarse en un entorno Python 3.9+ con las librerías indicadas.  
-El dataset no está incluido, ya que contiene información sensible. Para acceder, debe solicitarse directamente al autor.
-
-**Recomendación:** abrir y ejecutar el notebook original en Google Colab o Jupyter Notebook para visualizar el proceso completo de entrenamiento.
+El objetivo del proyecto es ofrecer un flujo claro, usable y escalable que permita cargar archivos CSV con datos históricos, procesarlos mediante un modelo entrenado y presentar resultados interpretables que apoyen la toma de decisiones operacionales.
 
 ---
 
-## 2. Backend en MVC (PHP)
+## 1. Requisitos del entorno
 
-El backend está construido bajo el patrón Modelo–Vista–Controlador, lo que facilita la mantenibilidad y escalabilidad del sistema.  
-Su función es:
+Para ejecutar y evaluar correctamente el sistema en un entorno local se requiere contar con los siguientes componentes:
 
-- Validar el archivo cargado por el usuario  
-- Verificar que el dataset cumpla con las condiciones mínimas (formato CSV, existencia de columnas esperadas y ≥ 30 días de registros por alerta)  
-- Enviar el archivo al motor Python para su análisis  
-- Recibir los resultados en JSON y preparar la respuesta para el frontend  
+### 1.1. Herramientas de desarrollo
+- **Visual Studio Code (VS Code)**  
+  Editor recomendado para revisar y modificar el código del frontend, backend y scripts asociados.
 
-El backend también establece los mecanismos de comunicación con el modelo de ML y actúa como intermediario entre la vista y la ejecución del modelo.
+- **XAMPP** (o stack equivalente como WAMP/LAMP)  
+  Incluye:
+  - Apache (servidor web)
+  - PHP (backend MVC)
+  - MySQL/MariaDB (opcional, no utilizado en esta versión)
 
----
+> Nota: El sistema ha sido probado en un entorno local con XAMPP sobre Windows. Otros entornos equivalentes son compatibles siempre que permitan la ejecución de PHP y la invocación de scripts Python desde el backend.
 
-## 3. Frontend del sistema
+### 1.2. Entorno de Machine Learning
+- **Python 3.9 o superior**
+- Librerías principales:
+  - pandas
+  - numpy
+  - scikit-learn
+  - joblib
 
-El frontend está desarrollado utilizando HTML5, Bootstrap 5 y estilos personalizados para entregar una interfaz clara, moderna y fácil de usar.  
-Incluye las siguientes funciones:
-
-- Pantalla principal con carga de archivo CSV  
-- Validación visual de errores (formato incorrecto, falta de columnas, archivo sin datos suficientes, etc.)  
-- Vista de resultados que presenta:  
-  - Alertas normales  
-  - Alertas anómalas  
-  - Score del modelo para cada registro  
-  - Explicación resumida basada en variables importantes  
-
-Cuando el dataset cargado contiene más de un día de información, el sistema muestra únicamente el día más reciente, cumpliendo con el requisito de facilitar la inspección operativa diaria.
+El modelo entrenado y el script de inferencia se ejecutan desde el backend PHP mediante llamadas al intérprete de Python.
 
 ---
 
-## 4. Flujo completo del sistema
+## 2. Estructura general del repositorio
 
-El funcionamiento general es el siguiente:
+El sistema se organiza en las siguientes carpetas principales:
 
-1. El usuario accede al sistema y carga un archivo CSV con datos históricos.  
-2. El controlador valida el archivo y lo envía al script Python.  
-3. El motor de ML procesa el archivo, aplica el preprocesamiento original y ejecuta el modelo entrenado.  
-4. Python retorna un archivo JSON con predicciones, scores y explicabilidad.  
-5. El backend presenta los resultados en la interfaz, separando alertas normales de anomalías.  
+- **Modelo en python/**  
+  Contiene el desarrollo completo del modelo en Jupyter Notebook, incluyendo análisis exploratorio, entrenamiento y evaluación.
 
-Este flujo reproduce de manera fiel el comportamiento esperado de un sistema real de monitoreo operativo.
+- **despliegue_web/**  
+  Contiene el sistema web completo bajo arquitectura MVC en PHP (frontend y backend).
 
----
-
-## 5. Sobre el modelo utilizado
-
-El modelo principal es un **Random Forest Classifier**, seleccionado tras evaluar múltiples configuraciones.  
-Se eligió por ser:
-
-- Robusto ante ruido  
-- Adecuado para datos tabulares  
-- Capaz de manejar desbalance moderado mediante `class_weight=balanced`  
-- Compatibile con explicabilidad mediante feature importance  
-- Rápido en inferencia y apto para entornos productivos  
-
-El preprocesamiento se mantiene consistente con el notebook original, asegurando que el modelo reciba los mismos tipos de transformaciones.
+- **README.md**  
+  Documento de descripción y guía de ejecución del proyecto.
 
 ---
 
-## 6. Recomendaciones de uso
+## 3. Ejecución y visualización del sistema
 
-1. Ejecutar primero el notebook de entrenamiento para comprender la lógica del modelo.  
-2. Mantener la estructura del directorio tal como se presenta en este repositorio.  
-3. Asegurarse de que la ejecución de Python desde PHP esté habilitada en el servidor local.  
-4. configurar php.init a 64M para archivos con grandes volumenes de datos.
+El proyecto puede revisarse y ejecutarse de dos formas complementarias:  
+ a) mediante el análisis del modelo en Python,  
+ b) A través del despliegue web del sistema completo.
+
+Ambos enfoques permiten evaluar el comportamiento del modelo y los resultados obtenidos, desde una perspectiva analítica y operacional, respectivamente.
+
 ---
 
-## 7. Contacto para acceso al dataset
+### 3.1. Visualización y análisis del modelo en Python
 
-Debido a la naturaleza sensible de los datos, el dataset no está disponible en el repositorio.  
-Para solicitar acceso:
+La carpeta **`Modelo en python/`** contiene el desarrollo completo del modelo de aprendizaje automático en formato **Jupyter Notebook**, donde se documenta el proceso de preparación de datos, análisis exploratorio, feature engineering, entrenamiento y evaluación del modelo.
+
+Para revisar el modelo en Python se recomienda:
+
+1. Descargar o clonar el repositorio en su equipo.
+2. Abrir la carpeta `Modelo en python/` en **Google Colab** o **Jupyter Notebook**.
+3. Ejecutar el notebook principal de forma secuencial para reproducir:
+   - El análisis exploratorio de datos  
+   - La construcción de variables  
+   - El entrenamiento del modelo  
+   - La evaluación mediante métricas y gráficos  
+4. Revisar la generación del modelo entrenado, el cual es persistido para su uso posterior en el sistema web.
+
+Este enfoque permite comprender en detalle la lógica del modelo y validar los resultados desde una perspectiva analítica.
+
+---
+
+### 3.2. Ejecución del sistema web (Frontend + Backend)
+
+La carpeta **`despliegue_web/`** contiene el sistema completo de despliegue bajo arquitectura **MVC en PHP**, integrado con el motor de Machine Learning desarrollado en Python.
+
+Para ejecutar y visualizar el sistema web:
+
+> **Importante:** Para la correcta ejecución de este paso, es necesario haber completado previamente el Paso 1. En caso de requerir apoyo adicional para la configuración del entorno, puede consultarse el Punto 5.
+
+
+1. Descargar o clonar el repositorio en su equipo.
+2. Copiar la carpeta `despliegue_web/` dentro del directorio `htdocs` de **XAMPP**.
+3. Abrir la carpeta `despliegue_web/` en **Visual Studio Code** para revisar o modificar el código.
+4. Iniciar el servicio **Apache** desde el panel de control de XAMPP.
+5. Acceder al sistema desde un navegador web mediante la URL local correspondiente (por ejemplo, `http://localhost/despliegue_web`).
+
+Desde la interfaz web es posible cargar archivos CSV con datos históricos y visualizar los resultados generados por el modelo, incluyendo alertas normales, alertas anómalas y el score de criticidad asociado.
+
+---
+
+### 3.3. Relación entre el modelo y el despliegue web
+
+El modelo entrenado en Python es el mismo que se utiliza durante el despliegue web del sistema.  
+El backend en PHP se encarga de invocar el script de inferencia en Python, enviar el archivo CSV para su análisis y recibir los resultados en formato JSON, los cuales son posteriormente procesados y presentados en el frontend.
+
+De este modo, el repositorio permite evaluar el proyecto tanto desde una perspectiva académica (modelo en Python) como desde una perspectiva práctica y operativa (sistema web).
+
+---
+
+## 4. Consideraciones adicionales
+
+- El dataset no se incluye en el repositorio debido a su carácter sensible.
+- Para archivos de gran tamaño, se recomienda ajustar la configuración de PHP:
+  - `upload_max_filesize`
+  - `post_max_size`
+  - `memory_limit` (recomendado ≥ 64M)
+- Es necesario que el entorno permita la ejecución de Python desde PHP para el correcto funcionamiento del sistema.
+
+---
+
+## 5. Referencias externas:
+
+Para usuarios que requieran apoyo adicional en la configuración del entorno local, se pueden consultar tutoriales públicos en Internet sobre:
+
+ * Instalación de Visual Studio Code y extensiones de PHP
+ *Instalación y configuración de XAMPP en Windows
+
+> Nota: Estas referencias no forman parte del desarrollo del proyecto y se incluyen únicamente como material de apoyo opcional.
+
+---
+
+## 6. Acceso al dataset
+
+El dataset no se encuentra disponible en este repositorio debido a su carácter sensible.  
+Para consultas académicas o solicitud de acceso:
 
 📧 g.zuigaguerra@uandresbello.edu
 
 ---
 
-## 8. Resumen del uso del repositorio
+## 7. Resumen
 
-1. **Frontend:** Carga y presentación de resultados  
-2. **Backend MVC:** Validación, control del flujo y comunicación Python ↔ PHP  
-3. **ML Engine:** Modelo entrenado + preprocesador + inferencia automática  
+- **Frontend:** carga y visualización de resultados
+- **Backend MVC:** validación y orquestación del flujo
+- **Machine Learning:** detección de anomalías y scoring automático
 
-Este repositorio constituye una base sólida para evolucionar hacia una arquitectura más completa, incluyendo APIs REST, integración con AWS, pipelines automáticos y despliegue productivo.
-
+Este repositorio constituye una base sólida para futuras extensiones, tales como integración con APIs REST, despliegue en la nube y automatización de pipelines.
